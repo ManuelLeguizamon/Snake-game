@@ -34,10 +34,9 @@ def draw_win(SNAKE,FOOD):
 
 #---------------------------------------------------V
 def main():
-
-    SNAKE = [pg.rect.Rect(300, 200, snake_size, snake_size)]
+    SNAKE = pg.rect.Rect(300, 200, snake_size, snake_size)
     DIRECCION = ''
-    FOOD = pg.Rect(randint(0, WIDTH_WIN - snake_size), randint(0, HEIGHT_WIN - snake_size),snake_size,snake_size)
+    FOOD = pg.Rect(randint(0, HEIGHT_WIN - snake_size),randint(0, WIDTH_WIN - snake_size) ,snake_size,snake_size)
     clock = pg.time.Clock()
     while True:
         key_pressed = pg.key.get_pressed()
@@ -56,12 +55,10 @@ def main():
                     DIRECCION = "left"
                 elif event.key == pg.K_d:
                     DIRECCION = "right"
-
-        NEW_SEGMENT = pg.Rect(SNAKE[0].x, SNAKE[0].y, snake_size, snake_size)
         if SNAKE.colliderect(FOOD):
-            SNAKE.append(NEW_SEGMENT)
-            FOOD.x = randint(0, WIDTH_WIN - snake_size)
-            FOOD.y = randint(0, HEIGHT_WIN - snake_size)
+            FOOD.y = randint(0, WIDTH_WIN)
+            FOOD.x = randint(0, HEIGHT_WIN)
+            
 
         movimiento(SNAKE, DIRECCION)
         draw_win(SNAKE,FOOD)  
