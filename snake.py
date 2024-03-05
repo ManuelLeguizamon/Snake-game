@@ -16,6 +16,8 @@ move = 7
 
 food_color = (51, 77, 0)
 WIN_COLOR = (13, 13, 13)
+puntos_color = (128, 0, 64)
+    # Sonidos
 END_SOUND = pg.mixer.Sound('archivos/end.mp3')
 FOOD_SOUND = pg.mixer.Sound('archivos/FOOD.mp3')
 
@@ -31,7 +33,7 @@ def movimiento(SNAKE, DIRECCION):
         elif DIRECCION == "right":
             SNAKE[0].x += move  
 
-# Perder al toar un borde  
+    # Perder al toar un borde  
 def end_move(SNAKE):
     if SNAKE[0].y < 0 or SNAKE[0].y > HEIGHT_WIN - 232:
         END_SOUND.play()
@@ -42,31 +44,34 @@ def end_move(SNAKE):
         END()
         main()
 
-# Cartel de que perdiste
+
+#---------------------------------------------------V
+# Carteles de perder
+       
 def END():  
-    LOSE_TXT=pg.font.SysFont("Times New Roman", 100)
-    LOSE_RENDER = LOSE_TXT.render("¡PERDISTE!",1, (230, 0, 0))
-    WIN.blit(LOSE_RENDER,(WIDTH_WIN//2 - 160, HEIGHT_WIN//2 - 180))
+    LOSE_TXT=pg.font.SysFont("Times New Roman", 80)
+    LOSE_RENDER = LOSE_TXT.render("¡PERDISTES CHE!",1, (230, 0, 0))
+    WIN.blit(LOSE_RENDER,(WIDTH_WIN//2 - 220, HEIGHT_WIN//2 - 180))
     pg.display.update()
     pg.time.delay(1000)
 
-def comerse_sola(SNAKE): # FALTA TERMINARRRRRRR!!!!!!
-    for segment in SNAKE[6:]:
-        if SNAKE[0].colliderect(segment):
-            pass
-
-
 
 #---------------------------------------------------V
-def draw_win(SNAKE,FOOD):
+PUNTOS_RENDER = pg.font.SysFont("Times New Roman", 50)
+
+def draw_win(SNAKE,FOOD, PUNTAJE):
     WIN.fill(WIN_COLOR)
     for segment in SNAKE:
         pg.draw.rect(WIN, snake_color, segment)
     pg.draw.rect(WIN,food_color,FOOD)
-    pg.display.update()
+    PUNTOS_TXT = PUNTOS_RENDER.render(f"Puntos: {PUNTAJE}", 1, puntos_color)
+    WIN.blit(PUNTOS_TXT, (10,8))
 
+    pg.display.update()
 #---------------------------------------------------V
 def main():
+    
+    PUNTAJE = 0
     SNAKE = [pg.rect.Rect(300, 200, snake_size, snake_size)]
     DIRECCION = ''
     FOOD = pg.Rect(randint(0, HEIGHT_WIN - snake_size -40), randint(0, WIDTH_WIN - snake_size - 40), snake_size, snake_size)
@@ -93,6 +98,7 @@ def main():
             FOOD_SOUND.play()
             FOOD.y = randint(0, WIDTH_WIN)
             FOOD.x = randint(0, HEIGHT_WIN)
+            PUNTAJE += 1
             
             last_segment = SNAKE[-1]
             if DIRECCION == "up":
@@ -112,11 +118,11 @@ def main():
 
 # Funciones            
         movimiento(SNAKE, DIRECCION)
-        draw_win(SNAKE,FOOD) 
+        draw_win(SNAKE,FOOD,PUNTAJE) 
         end_move(SNAKE) 
-        comerse_sola(SNAKE)
-        
 
-main()
+#---------------------------------------------------V
+if __name__ == "__main__":
+    main()
 
 
